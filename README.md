@@ -8,9 +8,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ![](./src/images/readmefile/4.png)
 
+![](./src/images/readmefile/61.png)
+
 ![](./src/images/readmefile/5.png)
 
-![](./src/images/readmefile/6.png)
 <br><br>
 
 ## Getting Started
@@ -26,8 +27,12 @@ pnpm dev
 # or
 bun dev
 ```
+
  <br>
- <img src="https://github.com/user-attachments/assets/0bf134e2-c0ba-488b-bbd4-9300f2f77871" width="400">
+<div align="center">
+<!--   <img src="https://readme-typing-svg.demolab.com?font=Calibiri+Code&weight=900&size=50&pause=1000&color=070B0D&center=true&vCenter=true&width=800&height=150&lines=Full-Stack + Developer" alt="Typing Animation"> -->
+  <img src="https://github.com/user-attachments/assets/0bf134e2-c0ba-488b-bbd4-9300f2f77871" width="500">
+</div>
  <br>
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

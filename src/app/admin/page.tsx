@@ -30,8 +30,15 @@ import {
   Delete as DeleteIcon,
 } from "@mui/icons-material";
 
+// TabPanel komponenti uchun interfeys
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
 // TabPanel komponenti
-function TabPanel(props) {
+function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -48,7 +55,7 @@ function TabPanel(props) {
 }
 
 // a11yProps funksiyasi
-function a11yProps(index) {
+function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -148,11 +155,11 @@ export default function AdminPage() {
     localStorage.setItem("stats", JSON.stringify(stats));
   }, [stats]);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const handleSnackbarClose = (event, reason) => {
+  const handleSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") return;
     setSnackbar({ ...snackbar, open: false });
   };

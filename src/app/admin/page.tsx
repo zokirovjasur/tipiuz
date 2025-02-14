@@ -30,13 +30,8 @@ import {
   Delete as DeleteIcon,
 } from "@mui/icons-material";
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
+// TabPanel komponenti
+function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -52,13 +47,15 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: number) {
+// a11yProps funksiyasi
+function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
+// Dastlabki ma'lumotlar
 const initialNews = [
   {
     id: 1,
@@ -110,16 +107,17 @@ const initialStats = {
   grantValue: 1000000000,
 };
 
+// Asosiy AdminPage komponenti
 export default function AdminPage() {
   const [value, setValue] = useState(0);
-  const [news, setNews] = useState([]);
-  const [events, setEvents] = useState([]);
-  const [faculty, setFaculty] = useState([]);
+  const [news, setNews] = useState(initialNews);
+  const [events, setEvents] = useState(initialEvents);
+  const [faculty, setFaculty] = useState(initialFaculty);
   const [stats, setStats] = useState(initialStats);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
-    severity: "success" as "success" | "error",
+    severity: "success",
   });
 
   useEffect(() => {
@@ -128,10 +126,10 @@ export default function AdminPage() {
     const storedFaculty = localStorage.getItem("faculty");
     const storedStats = localStorage.getItem("stats");
 
-    setNews(storedNews ? JSON.parse(storedNews) : initialNews);
-    setEvents(storedEvents ? JSON.parse(storedEvents) : initialEvents);
-    setFaculty(storedFaculty ? JSON.parse(storedFaculty) : initialFaculty);
-    setStats(storedStats ? JSON.parse(storedStats) : initialStats);
+    if (storedNews) setNews(JSON.parse(storedNews));
+    if (storedEvents) setEvents(JSON.parse(storedEvents));
+    if (storedFaculty) setFaculty(JSON.parse(storedFaculty));
+    if (storedStats) setStats(JSON.parse(storedStats));
   }, []);
 
   useEffect(() => {
@@ -150,17 +148,12 @@ export default function AdminPage() {
     localStorage.setItem("stats", JSON.stringify(stats));
   }, [stats]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleSnackbarClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") return;
     setSnackbar({ ...snackbar, open: false });
   };
 
@@ -227,6 +220,7 @@ export default function AdminPage() {
   );
 }
 
+// NewsManagement komponenti
 function NewsManagement({ news, setNews, setSnackbar }) {
   const [openDialog, setOpenDialog] = useState(false);
   const [currentNews, setCurrentNews] = useState({
@@ -249,23 +243,16 @@ function NewsManagement({ news, setNews, setSnackbar }) {
   };
 
   const handleSaveNews = () => {
-    if (currentNews.id) {
-      setNews(
-        news.map((item) => (item.id === currentNews.id ? currentNews : item))
-      );
-      setSnackbar({
-        open: true,
-        message: "News updated successfully",
-        severity: "success",
-      });
-    } else {
-      setNews([...news, { ...currentNews, id: Date.now() }]);
-      setSnackbar({
-        open: true,
-        message: "News added successfully",
-        severity: "success",
-      });
-    }
+    const updatedNews = currentNews.id
+      ? news.map((item) => (item.id === currentNews.id ? currentNews : item))
+      : [...news, { ...currentNews, id: Date.now() }];
+
+    setNews(updatedNews);
+    setSnackbar({
+      open: true,
+      message: `News ${currentNews.id ? "updated" : "added"} successfully`,
+      severity: "success",
+    });
     handleCloseDialog();
   };
 
@@ -371,6 +358,7 @@ function NewsManagement({ news, setNews, setSnackbar }) {
   );
 }
 
+// EventsManagement komponenti
 function EventsManagement({ events, setEvents, setSnackbar }) {
   const [openDialog, setOpenDialog] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({
@@ -393,25 +381,18 @@ function EventsManagement({ events, setEvents, setSnackbar }) {
   };
 
   const handleSaveEvent = () => {
-    if (currentEvent.id) {
-      setEvents(
-        events.map((item) =>
+    const updatedEvents = currentEvent.id
+      ? events.map((item) =>
           item.id === currentEvent.id ? currentEvent : item
         )
-      );
-      setSnackbar({
-        open: true,
-        message: "Event updated successfully",
-        severity: "success",
-      });
-    } else {
-      setEvents([...events, { ...currentEvent, id: Date.now() }]);
-      setSnackbar({
-        open: true,
-        message: "Event added successfully",
-        severity: "success",
-      });
-    }
+      : [...events, { ...currentEvent, id: Date.now() }];
+
+    setEvents(updatedEvents);
+    setSnackbar({
+      open: true,
+      message: `Event ${currentEvent.id ? "updated" : "added"} successfully`,
+      severity: "success",
+    });
     handleCloseDialog();
   };
 
@@ -519,6 +500,7 @@ function EventsManagement({ events, setEvents, setSnackbar }) {
   );
 }
 
+// FacultyManagement komponenti
 function FacultyManagement({ faculty, setFaculty, setSnackbar }) {
   const [openDialog, setOpenDialog] = useState(false);
   const [currentFaculty, setCurrentFaculty] = useState({
@@ -541,25 +523,20 @@ function FacultyManagement({ faculty, setFaculty, setSnackbar }) {
   };
 
   const handleSaveFaculty = () => {
-    if (currentFaculty.id) {
-      setFaculty(
-        faculty.map((item) =>
+    const updatedFaculty = currentFaculty.id
+      ? faculty.map((item) =>
           item.id === currentFaculty.id ? currentFaculty : item
         )
-      );
-      setSnackbar({
-        open: true,
-        message: "Faculty member updated successfully",
-        severity: "success",
-      });
-    } else {
-      setFaculty([...faculty, { ...currentFaculty, id: Date.now() }]);
-      setSnackbar({
-        open: true,
-        message: "Faculty member added successfully",
-        severity: "success",
-      });
-    }
+      : [...faculty, { ...currentFaculty, id: Date.now() }];
+
+    setFaculty(updatedFaculty);
+    setSnackbar({
+      open: true,
+      message: `Faculty member ${
+        currentFaculty.id ? "updated" : "added"
+      } successfully`,
+      severity: "success",
+    });
     handleCloseDialog();
   };
 
@@ -669,6 +646,7 @@ function FacultyManagement({ faculty, setFaculty, setSnackbar }) {
   );
 }
 
+// StatisticsManagement komponenti
 function StatisticsManagement({ stats, setStats, setSnackbar }) {
   const [localStats, setLocalStats] = useState(stats);
 

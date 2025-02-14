@@ -243,7 +243,7 @@ export default function Navbar() {
               }}
             >
               <Image
-                src="/logo.svg"
+                src="/Logo.svg"
                 alt="Logo"
                 width={200.42}
                 height={65}

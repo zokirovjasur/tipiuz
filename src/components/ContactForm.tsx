@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { TextField, Button, Box, Typography, Container } from "@mui/material";
-import { Mail, Phone } from "lucide-react";
 import type React from "react";
 
 export default function ContactForm() {
@@ -190,13 +189,11 @@ export default function ContactForm() {
               icon="/email.svg"
               alt="Mail Icon"
               text="tipiuniversity@mail.uz"
-              link="mailto:tipiuniversity@mail.uz"
             />
             <ContactInfoItem
               icon="/phone.svg"
               alt="Phone Icon"
               text="55 900 06 04"
-              link="tel:+998559000604"
             />
           </div>
         </div>
@@ -204,8 +201,6 @@ export default function ContactForm() {
     </Container>
   );
 }
-
-// Qayta ishlatiladigan ContactInfoItem komponenti
 function ContactInfoItem({
   icon,
   alt,
@@ -215,15 +210,16 @@ function ContactInfoItem({
   alt: string;
   text: string;
 }) {
+  if (!text) return null; // text bo'lmasa, komponent hech narsa qaytarmaydi.
+
   const isEmail = text.includes("@");
-  const link = isEmail ? `mailto:${text}` : `tel:${text.replace(/\s/g, "")}`;
+  const link = isEmail ? `mailto:${text}` : `tel:+${text.replace(/\D/g, "")}`;
 
   return (
     <a
       href={link}
       className="flex w-full justify-end"
-      target="_blank"
-      rel="noopener noreferrer"
+      {...(isEmail ? { target: "_blank", rel: "noopener noreferrer" } : {})}
     >
       <div className="bg-[#F7F8FA] p-2 flex items-center justify-center w-12 h-12 rounded-l-lg mr-2">
         <img src={icon} alt={alt} className="w-6 h-6" />
